@@ -29,6 +29,7 @@ namespace Player.ViewModels
                 {
                     _selectedSong = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(SelectedArtist));
                     OnPropertyChanged(nameof(SelectedTitle)); // повідомляє, що SelectedTitle теж змінився
                     PlaySelectedSong();
                 }
@@ -37,6 +38,7 @@ namespace Player.ViewModels
 
 
         public string SelectedTitle => _selectedSong?.Title ?? "Unknown Title";
+        public string SelectedArtist => _selectedSong?.Artist ?? "Unknown Artist";
 
 
         private WaveOutEvent _outputDevice;
@@ -91,36 +93,18 @@ namespace Player.ViewModels
         public void LoadSongs(string[] filePaths)
         {
             Songs.Clear();
-
-            if (filePaths == null || filePaths.Length == 0)
-            {
-                Debug.WriteLine("❌ LoadSongs: filePaths порожній або null");
-                return;
-            }
-
             foreach (var path in filePaths)
             {
-                try
+                var file = TagLib.File.Create(path);
+                var song = new Song
                 {
-                    Debug.WriteLine($"✔ Завантаження: {path}");
-
-                    var file = TagLib.File.Create(path);
-                    var song = new Song
-                    {
-                        FilePath = path,
-                        Title = file.Tag.Title ?? System.IO.Path.GetFileNameWithoutExtension(path),
-                        Artist = file.Tag.FirstPerformer ?? "Unknown",
-                        AlbumArt = LoadImage(file)
-                    };
-                    Songs.Add(song);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"❌ Помилка з файлом {path}: {ex.Message}");
-                }
+                    FilePath = path,
+                    Title = file.Tag.Title ?? System.IO.Path.GetFileNameWithoutExtension(path),
+                    Artist = file.Tag.FirstPerformer ?? "Unknown",
+                    AlbumArt = LoadImage(file)
+                };
+                Songs.Add(song);
             }
-
-            Debug.WriteLine($"✅ Усього завантажено пісень: {Songs.Count}");
         }
 
 
