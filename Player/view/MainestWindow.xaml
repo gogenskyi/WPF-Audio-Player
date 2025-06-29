@@ -104,7 +104,7 @@
                             <StackPanel>
                                 <Rectangle MinHeight="200" MinWidth="200"  Height="200" Width="200" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,50,0,0" RadiusX="12" RadiusY="12">
                                     <Rectangle.Fill>
-                                        <ImageBrush ImageSource="{Binding SelectedSong.AlbumArt}" Stretch="UniformToFill" />
+                                        <ImageBrush ImageSource="{Binding SelectedAlbum}" Stretch="UniformToFill" />
                                     </Rectangle.Fill>
                                     <Rectangle.Effect>
                                         <DropShadowEffect Color="#FF000000" BlurRadius="20" ShadowDepth="4" Opacity="1"/>

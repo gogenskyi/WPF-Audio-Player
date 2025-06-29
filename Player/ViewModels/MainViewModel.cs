@@ -31,7 +31,9 @@ namespace Player.ViewModels
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(SelectedArtist));
                     OnPropertyChanged(nameof(SelectedTitle)); // повідомляє, що SelectedTitle теж змінився
+                    OnPropertyChanged(nameof(SelectedAlbum));
                     PlaySelectedSong();
+
                 }
             }
         }
@@ -39,6 +41,8 @@ namespace Player.ViewModels
 
         public string SelectedTitle => _selectedSong?.Title ?? "Unknown Title";
         public string SelectedArtist => _selectedSong?.Artist ?? "Unknown Artist";
+        public BitmapImage SelectedAlbum => _selectedSong?.AlbumArt ?? DefaultImage();
+
 
 
         private WaveOutEvent _outputDevice;
@@ -46,7 +50,6 @@ namespace Player.ViewModels
         private DispatcherTimer _positionTimer;
         private bool _isDraggingSlider;
         protected bool _isPlaying = false;
-        private BitmapImage iconSource;
 
 
         private double _trackPositionSeconds;
@@ -100,8 +103,6 @@ namespace Player.ViewModels
                 image.EndInit();
                 return image;
             }
-
-            // 👉 Fallback до вбудованого зображення
 
             return DefaultImage();
         }
