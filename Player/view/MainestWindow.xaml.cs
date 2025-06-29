@@ -22,20 +22,21 @@ namespace Player.view
     {
         public MainestWindow()
         {
+            InitializeComponent();
             DataContext = new MainViewModel(Close);
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (DataContext is MainViewModel vm)
             {
-            // Upload last folder feature (dont work)
-            //string settingsPath = System.IO.Path.Combine(
-            //Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            //"PlayerApp",
-            //"settings.json");
-            //string jsonString = File.ReadAllText(settingsPath);
-            //Config config = JsonSerializer.Deserialize<Config>(jsonString);
-            //string folderPath = config.LastFolder;
+                // Upload last folder feature (dont work)
+                //string settingsPath = System.IO.Path.Combine(
+                //Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                //"PlayerApp",
+                //"settings.json");
+                //string jsonString = File.ReadAllText(settingsPath);
+                //Config config = JsonSerializer.Deserialize<Config>(jsonString);
+                //string folderPath = config.LastFolder;
             var files = Directory.GetFiles(@"E:\music", "*.mp3");
             vm.LoadSongs(files);
             }
@@ -65,9 +66,12 @@ namespace Player.view
             }
         }
 
-        private void Window_Loaded_1(object sender, RoutedEventArgs e)
+        private void Window_Loaded1(object sender, RoutedEventArgs e)
         {
-
+            if (DataContext is MainViewModel vm)
+            {
+                vm.LoadLastUsedFolder();
+            }
         }
     }
 }
