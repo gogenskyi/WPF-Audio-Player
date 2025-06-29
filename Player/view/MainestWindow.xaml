@@ -47,7 +47,7 @@
                                                 <ImageBrush ImageSource="{Binding AlbumArt}"/>
                                             </Rectangle.Fill>
                                             <Rectangle.Effect>
-                                                <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="4" Opacity="1"/>
+                                                <DropShadowEffect Color="#FF000000" BlurRadius="11" ShadowDepth="4" Opacity="1"/>
                                             </Rectangle.Effect>
                                         </Rectangle>
                                         <StackPanel>
