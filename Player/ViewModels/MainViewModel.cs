@@ -18,6 +18,7 @@ namespace Player.ViewModels
     {
         public ObservableCollection<Song> Songs { get; set; } = new();
         public ICommand LoadMusicCommand => new RelayCommand(SelectFolderAndLoadMusic);
+        public ICommand NextSongCommand { get; }
 
         private Song _selectedSong;
 
@@ -34,7 +35,6 @@ namespace Player.ViewModels
                     OnPropertyChanged(nameof(SelectedTitle)); // повідомляє, що SelectedTitle теж змінився
                     OnPropertyChanged(nameof(SelectedAlbum));
                     PlaySelectedSong();
-
                 }
             }
         }
@@ -52,6 +52,15 @@ namespace Player.ViewModels
         private bool _isDraggingSlider;
         protected bool _isPlaying = false;
 
+        //NextSongCommand = new RelayCommand(_ => PlayNextSong(), _ => CanPlayNext());
+        private bool CanPlayNext()
+        {
+            if (SelectedSong == null || Songs == null || Songs.Count == 0)
+                return false;
+
+            int currentIndex = Songs.IndexOf(SelectedSong);
+            return currentIndex >= 0 && currentIndex < Songs.Count - 1;
+        }
 
         private double _trackPositionSeconds;
         public double TrackPositionSeconds

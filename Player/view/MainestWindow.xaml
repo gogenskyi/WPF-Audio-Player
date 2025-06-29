@@ -150,8 +150,8 @@
                                                 <DropShadowEffect Color="#FF000000" BlurRadius="20" ShadowDepth="1" Opacity="1"/>
                                             </Border.Effect>
                                         </Border>
-                                        <Border Background="#7F9C9C9C" CornerRadius="360" Width="70" Height="70" Margin="10 0 10 0">
-                                            <Button Foreground="White" Padding="10" Background="Transparent" Width="70" Height="70">
+                                        <Border Background="#7F9C9C9C" CornerRadius="360" Width="70" Height="70" Margin="10 0 10 0" Cursor="">
+                                            <Button Foreground="White" Command="{Binding NextSong}"  Padding="10" Background="Transparent" Width="70" Height="70">
                                             </Button>
                                             <Border.Effect>
                                                 <DropShadowEffect Color="#FF000000" BlurRadius="20" ShadowDepth="1" Opacity="1"/>
