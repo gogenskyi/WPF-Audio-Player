@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Windows;
 
 namespace Player.ViewModels
 {
@@ -208,6 +209,7 @@ namespace Player.ViewModels
 
             _audioFileReader = new AudioFileReader(SelectedSong.FilePath);
             _outputDevice = new WaveOutEvent();
+            _outputDevice.PlaybackStopped += OnPlaybackStopped;
             _outputDevice.Init(_audioFileReader);
             _isPlaying = true;
             _outputDevice.Play();
@@ -222,8 +224,8 @@ namespace Player.ViewModels
                 {
                     try
                     {
-                    TrackPositionSeconds = _audioFileReader.CurrentTime.TotalSeconds;
-                    OnPropertyChanged(nameof(TrackDurationSeconds));
+                        TrackPositionSeconds = _audioFileReader?.CurrentTime.TotalSeconds ?? 0;
+                        OnPropertyChanged(nameof(TrackDurationSeconds));
                     }
                     catch (System.NullReferenceException)
                     {
@@ -243,6 +245,45 @@ namespace Player.ViewModels
 
             };
             OnPropertyChanged(nameof(DurationTimePosition));
+
+        }
+        private void OnPlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            if (_audioFileReader != null)
+            {
+                _audioFileReader.Dispose();
+                _audioFileReader = null;
+            }
+
+            if (_outputDevice != null)
+            {
+                _outputDevice.Dispose();
+                _outputDevice = null;
+            }
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                PlayNextSong();
+            });
+        }
+        private void PlayNextSong()
+        {
+            if (SelectedSong == null || Songs == null || Songs.Count == 0)
+                return;
+
+            int currentIndex = Songs.IndexOf(SelectedSong);
+            if (currentIndex >= 0 && currentIndex < Songs.Count - 1)
+            {
+                SelectedSong = Songs[currentIndex + 1];
+            }
+            else if (currentIndex == Songs.Count - 1)
+            {
+                SelectedSong = Songs[0];
+            }
+            else
+            {
+                _isPlaying = false;
+            }
         }
 
 
