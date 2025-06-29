@@ -67,26 +67,6 @@ namespace Player.ViewModels
                 }
             }
         }
-        public bool IsPlaying
-        {
-            get => _isPlaying;
-            set
-            {
-                if (_isPlaying != value)
-                {
-                    _isPlaying = value;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(ButtonContent));
-                    OnPropertyChanged(nameof(ImagePath));
-                }
-            }
-        }
-        public string ButtonContent => IsPlaying ? "Pause" : "Play";
-        public string ImagePath => IsPlaying ? "view/Pause.png" : "view/Play.png";
-        public ICommand TogglePlayCommand { get; }
-
-
-
 
         public double TrackDurationSeconds =>
             _audioFileReader?.TotalTime.TotalSeconds ?? 0;
@@ -275,23 +255,6 @@ namespace Player.ViewModels
         public MainViewModel()
         {
             LoadLastUsedFolder();
-            TogglePlayCommand = new RelayCommand(_ => TogglePlay());
-        }
-        private void TogglePlay()
-        {
-            if (_outputDevice == null)
-                return;
-
-            if (IsPlaying)
-            {
-                _outputDevice.Pause();
-            }
-            else
-            {
-                _outputDevice.Play();
-            }
-
-            IsPlaying = !IsPlaying;
         }
         public string CurrentTimePosition =>
             TimeSpan.FromSeconds(TrackPositionSeconds).ToString(@"mm\:ss");

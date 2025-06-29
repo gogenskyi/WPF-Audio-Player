@@ -28,15 +28,15 @@ namespace Player.view
         {
             if (DataContext is MainViewModel vm)
             {
-
-            string settingsPath = System.IO.Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "PlayerApp",
-            "settings.json");
-            string jsonString = File.ReadAllText(settingsPath);
-            Config config = JsonSerializer.Deserialize<Config>(jsonString);
-            string folderPath = config.LastFolder;
-            var files = Directory.GetFiles(folderPath, "*.mp3");
+            // Upload last folder feature (dont work)
+            //string settingsPath = System.IO.Path.Combine(
+            //Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            //"PlayerApp",
+            //"settings.json");
+            //string jsonString = File.ReadAllText(settingsPath);
+            //Config config = JsonSerializer.Deserialize<Config>(jsonString);
+            //string folderPath = config.LastFolder;
+            var files = Directory.GetFiles(@"E:\music", "*.mp3");
             vm.LoadSongs(files);
             }
         }
