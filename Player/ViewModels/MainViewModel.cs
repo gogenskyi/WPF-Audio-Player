@@ -18,7 +18,6 @@ namespace Player.ViewModels
     {
         public ObservableCollection<Song> Songs { get; set; } = new();
         public ICommand LoadMusicCommand => new RelayCommand(SelectFolderAndLoadMusic);
-        public ICommand NextSongCommand { get; }
 
         private Song _selectedSong;
 
@@ -35,6 +34,7 @@ namespace Player.ViewModels
                     OnPropertyChanged(nameof(SelectedTitle)); // повідомляє, що SelectedTitle теж змінився
                     OnPropertyChanged(nameof(SelectedAlbum));
                     PlaySelectedSong();
+
                 }
             }
         }
@@ -52,15 +52,6 @@ namespace Player.ViewModels
         private bool _isDraggingSlider;
         protected bool _isPlaying = false;
 
-        //NextSongCommand = new RelayCommand(_ => PlayNextSong(), _ => CanPlayNext());
-        private bool CanPlayNext()
-        {
-            if (SelectedSong == null || Songs == null || Songs.Count == 0)
-                return false;
-
-            int currentIndex = Songs.IndexOf(SelectedSong);
-            return currentIndex >= 0 && currentIndex < Songs.Count - 1;
-        }
 
         private double _trackPositionSeconds;
         public double TrackPositionSeconds
@@ -193,6 +184,7 @@ namespace Player.ViewModels
                     var song = new Song
                     {
                         FilePath = path,
+                        Index = (short)(Songs.Count),
                         Title = tagFile.Tag.Title ?? Path.GetFileNameWithoutExtension(path),
                         Artist = tagFile.Tag.FirstPerformer ?? "Unknown",
                         AlbumArt = albumArtImage
@@ -207,56 +199,55 @@ namespace Player.ViewModels
             }
         }
 
-
         private void PlaySelectedSong()
         {
+            if (SelectedSong == null)
+                return;
 
+            PlaySong(SelectedSong.FilePath);
+        }
+        private void PlaySong(string filePath)
+        {
             _outputDevice?.Stop();
             _audioFileReader?.Dispose();
+            _positionTimer?.Stop();
 
-            if (SelectedSong == null) return;
-
-            _audioFileReader = new AudioFileReader(SelectedSong.FilePath);
+            _audioFileReader = new AudioFileReader(filePath);
             _outputDevice = new WaveOutEvent();
+
             _outputDevice.PlaybackStopped += OnPlaybackStopped;
             _outputDevice.Init(_audioFileReader);
             _isPlaying = true;
             _outputDevice.Play();
-            _positionTimer = new DispatcherTimer
 
+            // Таймер позиції
+            _positionTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(1000)
             };
+
             _positionTimer.Tick += (s, e) =>
             {
-                if (!_isDraggingSlider)
+                if (!_isDraggingSlider && _audioFileReader != null)
                 {
                     try
                     {
-                        TrackPositionSeconds = _audioFileReader?.CurrentTime.TotalSeconds ?? 0;
+                        TrackPositionSeconds = _audioFileReader.CurrentTime.TotalSeconds;
                         OnPropertyChanged(nameof(TrackDurationSeconds));
+                        OnPropertyChanged(nameof(CurrentTimePosition));
                     }
-                    catch (System.NullReferenceException)
+                    catch (NullReferenceException)
                     {
                         _positionTimer.Stop();
                         _outputDevice.Stop();
                     }
                 }
             };
+
             _positionTimer.Start();
-            _positionTimer.Tick += (s, e) =>
-            {
-                if (!_isDraggingSlider && _audioFileReader != null)
-                {
-                    TrackPositionSeconds = _audioFileReader.CurrentTime.TotalSeconds;
-                    OnPropertyChanged(nameof(CurrentTimePosition));
-                }
-
-            };
             OnPropertyChanged(nameof(DurationTimePosition));
-
         }
-        private void OnPlaybackStopped(object sender, StoppedEventArgs e)
+        private void OnPlaybackStopped()
         {
             if (_audioFileReader != null)
             {
@@ -269,10 +260,14 @@ namespace Player.ViewModels
                 _outputDevice.Dispose();
                 _outputDevice = null;
             }
-
+            //BUG HERE
             Application.Current.Dispatcher.Invoke(() =>
             {
-                PlayNextSong();
+                if (_audioFileReader?.CurrentTime == _audioFileReader?.TotalTime)
+                {
+                    //PlayNextSong();
+                }
+                else return;
             });
         }
         private void PlayNextSong()
@@ -280,18 +275,37 @@ namespace Player.ViewModels
             if (SelectedSong == null || Songs == null || Songs.Count == 0)
                 return;
 
-            int currentIndex = Songs.IndexOf(SelectedSong);
-            if (currentIndex >= 0 && currentIndex < Songs.Count - 1)
+            int Index = Songs.IndexOf(SelectedSong);
+            if (Index >= 0 && Index < Songs.Count - 1)
             {
-                SelectedSong = Songs[currentIndex + 1];
+                SelectedSong = Songs[Index + 1];
+                Index++;
+
             }
-            else if (currentIndex == Songs.Count - 1)
+            else if (Index == Songs.Count - 1)
             {
                 SelectedSong = Songs[0];
+                Index = 0;
             }
             else
             {
-                _isPlaying = false;
+                return;
+            }
+        }
+        private void OnPlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            // Обережно: ця подія може викликатися і при зупинці вручну
+            if (_audioFileReader == null)
+                return;
+
+            // Перевіряємо, чи реально дійшли до кінця
+            if (_audioFileReader.CurrentTime >= _audioFileReader.TotalTime - TimeSpan.FromMilliseconds(200))
+            {
+                // Переходимо до наступної пісні в UI-потоці
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    PlayNextSong();
+                });
             }
         }
 

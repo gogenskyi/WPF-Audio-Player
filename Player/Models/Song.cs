@@ -11,6 +11,7 @@ namespace Player.Models
     {
         public string FilePath { get; set; }
         public string Title { get; set; }
+        public short ?Index { get; set; }
         public string Artist { get; set; }  
         public BitmapImage AlbumArt { get; set; }
     }
