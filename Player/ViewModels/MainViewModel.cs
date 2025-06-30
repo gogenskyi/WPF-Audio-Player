@@ -20,6 +20,7 @@ namespace Player.ViewModels
         public ICommand LoadMusicCommand => new RelayCommand(SelectFolderAndLoadMusic);
         public ICommand NextCommand => new RelayCommand(PlayNextSong);
         public ICommand PreviuosCommand => new RelayCommand(PlayPreviuosSong);
+        public ICommand PlayPauseCommand => new RelayCommand(PauseOrResume);
 
         private Song _selectedSong;
 
@@ -33,13 +34,27 @@ namespace Player.ViewModels
                     _selectedSong = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(SelectedArtist));
-                    OnPropertyChanged(nameof(SelectedTitle)); // повідомляє, що SelectedTitle теж змінився
+                    OnPropertyChanged(nameof(SelectedTitle));
                     OnPropertyChanged(nameof(SelectedAlbum));
                     PlaySelectedSong();
 
                 }
             }
         }
+        public bool IsPlaying
+        {
+            get => _isPlaying;
+            set
+            {
+                if (_isPlaying != value)
+                {
+                    _isPlaying = value;
+                    OnPropertyChanged(nameof(IsPlaying));
+                    OnPropertyChanged(nameof(PlayPauseIcon));
+                }
+            }
+        }
+
 
 
         public string SelectedTitle => _selectedSong?.Title ?? "Unknown Title";
@@ -53,7 +68,9 @@ namespace Player.ViewModels
         private DispatcherTimer _positionTimer;
         private bool _isDraggingSlider;
         protected bool _isPlaying = false;
-
+        public string PlayPauseIcon => IsPlaying
+    ? "/view/icons/Pause.png"
+    : "/view/icons/Play.png";
 
         private double _trackPositionSeconds;
         public double TrackPositionSeconds
@@ -125,6 +142,12 @@ namespace Player.ViewModels
         }
         private void SelectFolderAndLoadMusic()
         {
+            if (IsPlaying)
+            {
+                _outputDevice.Pause();
+                _positionTimer?.Stop();
+                IsPlaying = false;
+            }
             var dialog = new CommonOpenFileDialog
             {
                 IsFolderPicker = true,
@@ -219,7 +242,7 @@ namespace Player.ViewModels
 
             _outputDevice.PlaybackStopped += OnPlaybackStopped;
             _outputDevice.Init(_audioFileReader);
-            _isPlaying = true;
+            IsPlaying = true;
             _outputDevice.Play();
 
             // Таймер позиції
@@ -249,6 +272,27 @@ namespace Player.ViewModels
             _positionTimer.Start();
             OnPropertyChanged(nameof(DurationTimePosition));
         }
+
+        private void PauseOrResume()
+        {
+            if (_outputDevice == null)
+                return;
+
+            if (IsPlaying)
+            {
+                _outputDevice.Pause();
+                _positionTimer?.Stop();
+                IsPlaying = false;
+            }
+            else
+            {
+                _outputDevice.Play();
+                _positionTimer?.Start();
+                IsPlaying = true;
+            }
+
+            OnPropertyChanged(nameof(IsPlaying));
+        }
         private void PlayNextSong()
         {
             if (SelectedSong == null || Songs == null || Songs.Count == 0)
@@ -277,15 +321,28 @@ namespace Player.ViewModels
                 return;
 
             int Index = Songs.IndexOf(SelectedSong);
-            if (Index >= 0 && Index < Songs.Count - 1)
+            try
             {
-                SelectedSong = Songs[Index - 1];
-                Index--;
 
+               
+                if (Index >= 0 && Index < Songs.Count - 1)
+                {
+                    SelectedSong = Songs[Index - 1];
+                    Index--;
+                }
+                else if (Index <= 0)
+                {
+                    SelectedSong = Songs[Songs.Count - 1];
+                    Index = Songs.Count;
+                }
+                else
+                {
+                    return;
+                }
             }
-            else
+            catch
             {
-                return;
+                Index = Songs.Count;
             }
         }
         private void OnPlaybackStopped(object sender, StoppedEventArgs e)

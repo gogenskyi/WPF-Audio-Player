@@ -7,9 +7,11 @@
         xmlns:vm="clr-namespace:Player.ViewModels" d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         mc:Ignorable="d"
         Loaded="Window_Loaded1"
-        Title="Null Player" Background="Transparent" Height="550" Width="800" MinHeight="550" MinWidth="800" WindowStartupLocation="CenterScreen" ResizeMode="CanResize" WindowStyle="None" AllowsTransparency="True" >
+        Title="Null Player" Background="Transparent" Height="550" Width="800" MinHeight="550" MinWidth="800" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" >
+    <Window.DataContext>
+        <vm:MainViewModel></vm:MainViewModel>
+    </Window.DataContext>
     <Window.Resources>
-        <vm:MainViewModel x:Key="1"></vm:MainViewModel>
         <Style TargetType="Window">
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -147,14 +149,14 @@
                                         <!--Play btn-->
                                         <Border Background="#99272727" CornerRadius="360" Margin="12" BorderThickness="0">
                                             <Grid Opacity="0.3">
-                                                <Border Padding="10">
+                                                <Border Padding="20">
                                                     <Rectangle>
                                                         <Rectangle.Fill>
-                                                            <ImageBrush ImageSource="/view/icons/Next.png"  Stretch="Uniform" />
+                                                            <ImageBrush ImageSource="{Binding PlayPauseIcon}"  Stretch="Uniform" />
                                                         </Rectangle.Fill>
                                                     </Rectangle>
                                                 </Border>
-                                                <Button Height="90" Width="90" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding LoadMusicCommand}" Cursor="Hand">
+                                                <Button Height="90" Width="90" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding PlayPauseCommand}" Cursor="Hand">
                                                     <Button.Effect>
                                                         <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
                                                     </Button.Effect>
