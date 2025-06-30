@@ -18,6 +18,7 @@ namespace Player.ViewModels
     {
         public ObservableCollection<Song> Songs { get; set; } = new();
         public ICommand LoadMusicCommand => new RelayCommand(SelectFolderAndLoadMusic);
+        public ICommand NextCommand => new RelayCommand(PlayNextSong);
 
         private Song _selectedSong;
 
@@ -246,29 +247,6 @@ namespace Player.ViewModels
 
             _positionTimer.Start();
             OnPropertyChanged(nameof(DurationTimePosition));
-        }
-        private void OnPlaybackStopped()
-        {
-            if (_audioFileReader != null)
-            {
-                _audioFileReader.Dispose();
-                _audioFileReader = null;
-            }
-
-            if (_outputDevice != null)
-            {
-                _outputDevice.Dispose();
-                _outputDevice = null;
-            }
-            //BUG HERE
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                if (_audioFileReader?.CurrentTime == _audioFileReader?.TotalTime)
-                {
-                    //PlayNextSong();
-                }
-                else return;
-            });
         }
         private void PlayNextSong()
         {

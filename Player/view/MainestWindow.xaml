@@ -81,15 +81,6 @@
                             <!--folder button-->
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                                 <Border Background="#99272727" CornerRadius="360" Margin="12" BorderThickness="0">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Button}}, Path=IsMouseOver}" Value="true">
-                                                    <Setter Property="Background" Value="#99000000"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
                                     <Grid Opacity="0.3">
                                         <Border Padding="5">
                                             <Rectangle>
@@ -136,26 +127,56 @@
                                 </Grid>
                                 <Grid>
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Cursor="">
-                                        <Border Background="#7F9C9C9C" CornerRadius="360" Width="70" Height="70" Margin="10 0 10 0">
-                                            <Button Foreground="White" Padding="10" Background="Transparent" Width="70" Height="70">
-                                            </Button>
-                                            <Border.Effect>
-                                                <DropShadowEffect Color="#FF000000" BlurRadius="20" ShadowDepth="1" Opacity="1"/>
-                                            </Border.Effect>
+                                        <!--previuos btn-->
+                                        <Border Background="#99272727" CornerRadius="360" Margin="21 21 10 21" BorderThickness="0">
+                                            <Grid Opacity="0.3">
+                                                <Border Padding="10">
+                                                    <Rectangle>
+                                                        <Rectangle.Fill>
+                                                            <ImageBrush ImageSource="/view/icons/Previous.png"  Stretch="Uniform" />
+                                                        </Rectangle.Fill>
+                                                    </Rectangle>
+                                                </Border>
+                                                <Button Height="70" Width="70" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding LoadMusicCommand}" Cursor="Hand">
+                                                    <Button.Effect>
+                                                        <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
+                                                    </Button.Effect>
+                                                </Button>
+                                            </Grid>
                                         </Border>
-                                        <Border Background="#7F9C9C9C" CornerRadius="360" Width="90" Height="90" Margin="10 0 10 0">
-                                            <Button Foreground="White" Padding="10" Background="Transparent" Width="70" Height="70">
-                                            </Button>
-                                            <Border.Effect>
-                                                <DropShadowEffect Color="#FF000000" BlurRadius="20" ShadowDepth="1" Opacity="1"/>
-                                            </Border.Effect>
+                                        <!--Play btn-->
+                                        <Border Background="#99272727" CornerRadius="360" Margin="12" BorderThickness="0">
+                                            <Grid Opacity="0.3">
+                                                <Border Padding="10">
+                                                    <Rectangle>
+                                                        <Rectangle.Fill>
+                                                            <ImageBrush ImageSource="/view/icons/Next.png"  Stretch="Uniform" />
+                                                        </Rectangle.Fill>
+                                                    </Rectangle>
+                                                </Border>
+                                                <Button Height="90" Width="90" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding LoadMusicCommand}" Cursor="Hand">
+                                                    <Button.Effect>
+                                                        <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
+                                                    </Button.Effect>
+                                                </Button>
+                                            </Grid>
                                         </Border>
-                                        <Border Background="#7F9C9C9C" CornerRadius="360" Width="70" Height="70" Margin="10 0 10 0" Cursor="">
-                                            <Button Foreground="White" Command="{Binding NextSongCommand}"  Padding="10" Background="Transparent" Width="70" Height="70" Cursor="Hand">
-                                            </Button>
-                                            <Border.Effect>
-                                                <DropShadowEffect Color="#FF000000" BlurRadius="20" ShadowDepth="1" Opacity="1"/>
-                                            </Border.Effect>
+                                        <!--Next btn-->
+                                        <Border Background="#99272727" CornerRadius="360" Margin="10 21 21 21" BorderThickness="0">
+                                            <Grid Opacity="0.3">
+                                                <Border Padding="10">
+                                                    <Rectangle>
+                                                        <Rectangle.Fill>
+                                                            <ImageBrush ImageSource="/view/icons/Next.png"  Stretch="Uniform" />
+                                                        </Rectangle.Fill>
+                                                    </Rectangle>
+                                                </Border>
+                                                <Button Height="70" Width="70" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding LoadMusicCommand}" Cursor="Hand">
+                                                    <Button.Effect>
+                                                        <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
+                                                    </Button.Effect>
+                                                </Button>
+                                            </Grid>
                                         </Border>
                                     </StackPanel>
                                 </Grid>
