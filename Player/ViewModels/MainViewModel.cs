@@ -19,6 +19,7 @@ namespace Player.ViewModels
         public ObservableCollection<Song> Songs { get; set; } = new();
         public ICommand LoadMusicCommand => new RelayCommand(SelectFolderAndLoadMusic);
         public ICommand NextCommand => new RelayCommand(PlayNextSong);
+        public ICommand PreviuosCommand => new RelayCommand(PlayPreviuosSong);
 
         private Song _selectedSong;
 
@@ -264,6 +265,23 @@ namespace Player.ViewModels
             {
                 SelectedSong = Songs[0];
                 Index = 0;
+            }
+            else
+            {
+                return;
+            }
+        }
+        private void PlayPreviuosSong()
+        {
+            if (SelectedSong == null || Songs == null || Songs.Count == 0)
+                return;
+
+            int Index = Songs.IndexOf(SelectedSong);
+            if (Index >= 0 && Index < Songs.Count - 1)
+            {
+                SelectedSong = Songs[Index - 1];
+                Index--;
+
             }
             else
             {

@@ -137,7 +137,7 @@
                                                         </Rectangle.Fill>
                                                     </Rectangle>
                                                 </Border>
-                                                <Button Height="70" Width="70" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding LoadMusicCommand}" Cursor="Hand">
+                                                <Button Height="70" Width="70" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding PreviuosCommand}" Cursor="Hand">
                                                     <Button.Effect>
                                                         <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
                                                     </Button.Effect>
@@ -163,7 +163,7 @@
                                         </Border>
                                         <!--Next btn-->
                                         <Border Background="#99272727" CornerRadius="360" Margin="10 21 21 21" BorderThickness="0">
-                                            <Grid Opacity="0.3">
+                                            <Grid Opacity="0.3" Cursor="">
                                                 <Border Padding="10">
                                                     <Rectangle>
                                                         <Rectangle.Fill>
@@ -171,7 +171,7 @@
                                                         </Rectangle.Fill>
                                                     </Rectangle>
                                                 </Border>
-                                                <Button Height="70" Width="70" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding LoadMusicCommand}" Cursor="Hand">
+                                                <Button Height="70" Width="70" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding NextCommand}" Cursor="Hand">
                                                     <Button.Effect>
                                                         <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
                                                     </Button.Effect>
