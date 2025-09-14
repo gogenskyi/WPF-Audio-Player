@@ -6,22 +6,31 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>view\icons\media.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\icons\media.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="albumdefault.png" />
-    <None Remove="view\icons\folder-invoices.png" />
-    <None Remove="view\icons\media.ico" />
-    <None Remove="view\icons\Pause.png" />
-    <None Remove="view\icons\Play.png" />
+    <None Remove="Assets\Fonts\Font Awesome 7 Brands-Regular-400.otf" />
+    <None Remove="Assets\Fonts\Font Awesome 7 Free-Regular-400.otf" />
+    <None Remove="Assets\Fonts\Font Awesome 7 Free-Solid-900.otf" />
+    <None Remove="Assets\icons\folder-invoices.png" />
+    <None Remove="Assets\icons\media.ico" />
+    <None Remove="Assets\icons\Next.png" />
+    <None Remove="Assets\icons\Pause.png" />
+    <None Remove="Assets\icons\Play.png" />
+    <None Remove="Assets\icons\Previous.png" />
+    <None Remove="Assets\icons\ReSkip.png" />
+    <None Remove="Assets\icons\Skip.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="view\icons\media.ico" />
+    <Content Include="Assets\icons\media.ico" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentWPF" Version="0.10.2" />
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="taglib-sharp-netstandard2.0" Version="2.1.0" />
@@ -29,19 +38,40 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="view\icons\albumdefault.png">
+    <Resource Include="Assets\Fonts\Font Awesome 7 Brands-Regular-400.otf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="view\icons\folder-invoices.png">
+    <Resource Include="Assets\Fonts\Font Awesome 7 Free-Regular-400.otf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="view\icons\media.ico">
+    <Resource Include="Assets\Fonts\Font Awesome 7 Free-Solid-900.otf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="view\icons\Pause.png">
+    <Resource Include="Assets\icons\albumdefault.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="view\icons\Play.png">
+    <Resource Include="Assets\icons\folder-invoices.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\media.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Next.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Pause.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Play.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Previous.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\ReSkip.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Skip.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
