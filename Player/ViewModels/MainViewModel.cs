@@ -69,8 +69,8 @@ namespace Player.ViewModels
         private bool _isDraggingSlider;
         protected bool _isPlaying = false;
         public string PlayPauseIcon => IsPlaying
-    ? "/view/icons/Pause.png"
-    : "/view/icons/Play.png";
+    ? "PauseCircle"
+    : "PlayCircle";
 
         private double _trackPositionSeconds;
         public double TrackPositionSeconds
@@ -128,7 +128,7 @@ namespace Player.ViewModels
         }
         public BitmapImage DefaultImage()
         {
-            return new BitmapImage(new Uri("pack://application:,,,/view/icons/albumdefault.png"));
+            return new BitmapImage(new Uri("pack://application:,,,/Assets/icons/albumdefault.png"));
         }
 
 
@@ -158,6 +158,7 @@ namespace Player.ViewModels
             {
                 string selectedPath = dialog.FileName;
                 SettingsHelper.SaveLastFolder(selectedPath);
+                GetPlayListName(selectedPath);
                 LoadMusicFromFolder(selectedPath);
             }
         }
@@ -169,10 +170,31 @@ namespace Player.ViewModels
             if (!string.IsNullOrEmpty(lastFolder) && Directory.Exists(lastFolder))
             {
                 LoadMusicFromFolder(lastFolder);
+                GetPlayListName(lastFolder);
             }
         }
 
+        private string _playlistName;
+        public string PlaylistName
+        {
+            get => _playlistName;
+        }
+        public void GetPlayListName(string FolderPath)
+        {
+            if(FolderPath == null)
+            {
+                _playlistName = "Select Playlist";
+                OnPropertyChanged(nameof(PlaylistName));
 
+            }
+            else
+            {
+                _playlistName = Path.GetFileName(Path.GetFullPath(FolderPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+                OnPropertyChanged(nameof(PlaylistName));
+
+            }
+
+        }
         private void LoadMusicFromFolder(string folderPath)
         {
             var supportedExtensions = new[] { ".mp3", ".wav", ".flac" };
@@ -181,7 +203,6 @@ namespace Player.ViewModels
                                  .Where(f => supportedExtensions.Contains(Path.GetExtension(f).ToLower()));
 
             Songs.Clear();
-
             foreach (var path in files)
             {
                 try
@@ -203,7 +224,7 @@ namespace Player.ViewModels
                     else
                     {
                         // fallback image
-                        albumArtImage = new BitmapImage(new Uri("pack://application:,,,/view/icons/albumdefault.png"));
+                        albumArtImage = new BitmapImage(new Uri("pack://application:,,,/Assets/icons/albumdefault.png"));
                     }
 
                     var song = new Song

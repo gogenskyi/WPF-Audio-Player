@@ -4,189 +4,176 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Player.view"
+		xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:vm="clr-namespace:Player.ViewModels"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Loaded="Window_Loaded1"
-        Title="Null Player" Background="Transparent" Height="550" Width="800" MinHeight="550" MinWidth="800" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" >
+        Title="Null Player"
+		Height="550" 
+		Width="800" 
+		MinHeight="550" 
+		MinWidth="800"
+        Opacity="0.8"
+        fw:AcrylicPanel.TintOpacity="0.6"
+		fw:AcrylicWindow.Enabled="true"
+        ResizeMode="CanResizeWithGrip" 
+        SizeToContent="Width" 
+        WindowState="Minimized">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
-    <Window.Resources>
-        <Style TargetType="Window">
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-        </Style>
-    </Window.Resources>
-    <Grid Background="Transparent" ClipToBounds="True">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="116*"/>
-            <ColumnDefinition Width="151*"/>
+            <ColumnDefinition MinWidth="100" MaxWidth="200"/>
+            <ColumnDefinition Width="*" MinWidth="500"/>
         </Grid.ColumnDefinitions>
-        <Border CornerRadius="18" ClipToBounds="True" Background="#FF292929" Grid.ColumnSpan="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="250" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Border BorderThickness="0" CornerRadius="18" Grid.ColumnSpan="10" ClipToBounds="True">
-                    <Rectangle RadiusX="32" RadiusY="32" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <Rectangle.Fill>
-                            <ImageBrush ImageSource="{Binding SelectedSong.AlbumArt}" Stretch="UniformToFill"/>
-                        </Rectangle.Fill>
-                        <Rectangle.Effect>
-                            <BlurEffect Radius="13" KernelType="Gaussian" RenderingBias="Performance"/>
-                        </Rectangle.Effect>
-                    </Rectangle>
-                </Border>
-                <Rectangle Fill="#99000000" Grid.ColumnSpan="3" RadiusX="18" RadiusY="18"/>
-                <!--LEFT-->
-                <Grid>
-                    <Border Opacity="0.6" Background="Black" CornerRadius="18 0 0 18">
-                        <ListBox ItemsSource="{Binding Songs}"
-                                 SelectedItem="{Binding SelectedSong, Mode=TwoWay}"
-                                 Margin="10"
-                                 Height="auto">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Margin="5">
-                                        <Rectangle Margin="0 3 8 3" Height="45" Width="45" RadiusX="5" RadiusY="5">
-                                            <Rectangle.Fill>
-                                                <ImageBrush ImageSource="{Binding AlbumArt}"/>
-                                            </Rectangle.Fill>
-                                            <Rectangle.Effect>
-                                                <DropShadowEffect Color="#FF000000" BlurRadius="11" ShadowDepth="4" Opacity="1"/>
-                                            </Rectangle.Effect>
-                                        </Rectangle>
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding Title}" FontWeight="Bold" Foreground="White"/>
-                                            <TextBlock Text="{Binding Artist}" FontSize="12" Foreground="White"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Border>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0">
+            <Border ClipToBounds="True"
+                    CornerRadius="360">
+                <Button Height="25" 
+                        Width="auto"
+                        ToolTip="Click here to select playlist"
+                        Background="Transparent"
+                        Command="{Binding LoadMusicCommand}"
+                        VerticalAlignment="Center"
+>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding PlaylistName}"
+                                   FontFamily="Arial"
+                                   FontSize="15">
+                            <TextBlock.Effect>
+                                <DropShadowEffect BlurRadius="1" ShadowDepth="0.5"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="1">
+            <ListBox ItemsSource="{Binding Songs}" 
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                     SelectedItem="{Binding SelectedSong, Mode=TwoWay}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Height="40" Width="40"
+                                           Margin="0 1 10 0"
+                                           RadiusX="1.5"
+                                           RadiusY="1.5">
+                                <Rectangle.Fill>
+                                    <ImageBrush ImageSource="{Binding AlbumArt}"/>
+                                </Rectangle.Fill>
+                                <Rectangle.Effect>
+                                    <DropShadowEffect BlurRadius="3" ShadowDepth="1.3"/>
+                                </Rectangle.Effect>
+                            </Rectangle>
+                            <StackPanel Orientation="Vertical" 
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Title}"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"
+                                               Padding="0"
+                                               FontFamily="Arial Rounded MT Bold">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect BlurRadius="01" ShadowDepth="0.3"/>
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                                <TextBlock Text="{Binding Artist}"
+                                               FontSize="10"
+                                               FontWeight="SemiBold"
+                                               Padding="0"
+                                               FontFamily="Arial Rounded MT Bold">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect BlurRadius="01" ShadowDepth="0.3"/>
+                                    </TextBlock.Effect>
+
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <Grid Grid.Column="2" Grid.RowSpan="2">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Rectangle Width="200"
+                           Height="200"
+                           RadiusX="3"
+                           RadiusY="3">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="{Binding SelectedAlbum}" Stretch="UniformToFill"/> 
+                    </Rectangle.Fill>
+                    <Rectangle.Effect>
+                        <DropShadowEffect BlurRadius="1" ShadowDepth="1" Color="Black"/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <StackPanel Margin="3" Orientation="Vertical" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding SelectedTitle}"
+                               HorizontalAlignment="Center"
+                               FontSize="14">
+                        <TextBlock.Effect>
+                            <DropShadowEffect BlurRadius="1" ShadowDepth="0.5"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                    <TextBlock Text="{Binding SelectedArtist}"
+                               FontSize="10"
+                               HorizontalAlignment="Center">
+                        <TextBlock.Effect>
+                            <DropShadowEffect BlurRadius="1" ShadowDepth="0.5"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </StackPanel>
+                <Slider Style="{StaticResource MaterialDesignSlider}"
+                        Value="{Binding TrackPositionSeconds, Mode=TwoWay}"
+                        IsSnapToTickEnabled="True"
+                        Foreground="#f111"
+                        Maximum="{Binding TrackDurationSeconds}"
+                        MinWidth="425"
+                        MaxWidth="1080"
+                        Padding="200"
+                        Background="Transparent"
+                        PreviewMouseUp="Slider_PreviewMouseUp"
+                        PreviewMouseLeftButtonUp="Slider_PreviewMouseLeftButtonUp"
+                        PreviewMouseDown="Slider_PreviewMouseDown"/>
+
+                <Grid Margin="6">
+                    <TextBlock HorizontalAlignment="Left"
+                               Text="{Binding CurrentTimePosition}"/>
+                    <TextBlock HorizontalAlignment="Right"
+                               Text="{Binding DurationTimePosition}"/>
                 </Grid>
-                <!--RIGHT-->
-                <Grid Grid.Column="1">
-                    <Border CornerRadius="12" Background="Transparent" BorderThickness="0" >
-                        <Grid>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                <Border Background="#99272727" CornerRadius="360" Margin="8" BorderThickness="0">
-                                    <Button Height="40" Width="40" FontFamily="Segoe UI Semibold" Content="X" Foreground="White" Command="{Binding CloseCommand}">
-                                        <Button.Effect>
-                                            <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
-                                        </Button.Effect>
-                                    </Button>
-                                </Border>
-                            </StackPanel>
-                            <!--folder button-->
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                <Border Background="#99272727" CornerRadius="360" Margin="12" BorderThickness="0">
-                                    <Grid Opacity="0.3">
-                                        <Border Padding="5">
-                                            <Rectangle>
-                                                <Rectangle.Fill>
-                                                    <ImageBrush ImageSource="/view/icons/folder-invoices.png"  Stretch="Uniform" />
-                                                </Rectangle.Fill>
-                                            </Rectangle>
-                                        </Border>
-                                        <Button Height="35" Width="35" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding LoadMusicCommand}" Cursor="Hand">
-                                            <Button.Effect>
-                                                <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
-                                            </Button.Effect>
-                                        </Button>
-                                    </Grid>
-                                </Border>
-                            </StackPanel>
-                            <StackPanel>
-                                <Rectangle MinHeight="200" MinWidth="200"  Height="200" Width="200" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,50,0,0" RadiusX="12" RadiusY="12">
-                                    <Rectangle.Fill>
-                                        <ImageBrush ImageSource="{Binding SelectedAlbum}" Stretch="UniformToFill" />
-                                    </Rectangle.Fill>
-                                    <Rectangle.Effect>
-                                        <DropShadowEffect Color="#FF000000" BlurRadius="20" ShadowDepth="4" Opacity="1"/>
-                                    </Rectangle.Effect>
-                                </Rectangle>
-                                <Label Content="{Binding SelectedTitle}" FontSize="30" Padding="50 0 50 0" Foreground="White" FontFamily="Segoe UI Semibold" Margin="6" HorizontalAlignment="Center">
-                                    <Label.Effect>
-                                        <DropShadowEffect Color="#FF000000"  BlurRadius="10" ShadowDepth="1" Opacity="0.5"/>
-                                    </Label.Effect>
-                                </Label>
-                                <Label Content="{Binding SelectedArtist}" Padding="50 0 50 0" FontSize="16" Foreground="White" FontFamily="Segoe UI" Margin="0 0 0 0" HorizontalAlignment="Center">
-                                    <Label.Effect>
-                                        <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" Opacity="0.5"/>
-                                    </Label.Effect>
-                                </Label>
-                                <Slider Foreground="White" Margin="50 25 50 5" Value="{Binding TrackPositionSeconds}" Maximum="{Binding TrackDurationSeconds}" PreviewMouseDown="Slider_PreviewMouseDown" PreviewMouseUp="Slider_PreviewMouseUp" PreviewMouseLeftButtonUp="Slider_PreviewMouseLeftButtonUp">
-                                    <Slider.Effect>
-                                        <DropShadowEffect Color="#FF000000" BlurRadius="20" ShadowDepth="1" Opacity="1"/>
-                                    </Slider.Effect>
-                                </Slider>
-                                <Grid Margin="50 2 50 2">
-                                    <Label FontFamily="Segoe UI Semibold" Margin="5" FontSize="15" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Left" Content="{Binding CurrentTimePosition}"></Label>
-                                    <Label FontFamily="Segoe UI Semibold" Margin="5" FontSize="15" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right" Content="{Binding DurationTimePosition}"></Label>
-                                </Grid>
-                                <Grid>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Cursor="">
-                                        <!--previuos btn-->
-                                        <Border Background="#99272727" CornerRadius="360" Margin="21 21 10 21" BorderThickness="0">
-                                            <Grid Opacity="0.3">
-                                                <Border Padding="10">
-                                                    <Rectangle>
-                                                        <Rectangle.Fill>
-                                                            <ImageBrush ImageSource="/view/icons/Previous.png"  Stretch="Uniform" />
-                                                        </Rectangle.Fill>
-                                                    </Rectangle>
-                                                </Border>
-                                                <Button Height="70" Width="70" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding PreviuosCommand}" Cursor="Hand">
-                                                    <Button.Effect>
-                                                        <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
-                                                    </Button.Effect>
-                                                </Button>
-                                            </Grid>
-                                        </Border>
-                                        <!--Play btn-->
-                                        <Border Background="#99272727" CornerRadius="360" Margin="12" BorderThickness="0">
-                                            <Grid Opacity="0.3">
-                                                <Border Padding="20">
-                                                    <Rectangle>
-                                                        <Rectangle.Fill>
-                                                            <ImageBrush ImageSource="{Binding PlayPauseIcon}"  Stretch="Uniform" />
-                                                        </Rectangle.Fill>
-                                                    </Rectangle>
-                                                </Border>
-                                                <Button Height="90" Width="90" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding PlayPauseCommand}" Cursor="Hand">
-                                                    <Button.Effect>
-                                                        <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
-                                                    </Button.Effect>
-                                                </Button>
-                                            </Grid>
-                                        </Border>
-                                        <!--Next btn-->
-                                        <Border Background="#99272727" CornerRadius="360" Margin="10 21 21 21" BorderThickness="0">
-                                            <Grid Opacity="0.3" Cursor="">
-                                                <Border Padding="10">
-                                                    <Rectangle>
-                                                        <Rectangle.Fill>
-                                                            <ImageBrush ImageSource="/view/icons/Next.png"  Stretch="Uniform" />
-                                                        </Rectangle.Fill>
-                                                    </Rectangle>
-                                                </Border>
-                                                <Button Height="70" Width="70" Background="Transparent" FontFamily="Segoe UI Semibold" Foreground="White" Command="{Binding NextCommand}" Cursor="Hand">
-                                                    <Button.Effect>
-                                                        <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="1" />
-                                                    </Button.Effect>
-                                                </Button>
-                                            </Grid>
-                                        </Border>
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Grid>
-        </Border>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Button Height="30" Width="30" Padding="0"
+                            Margin="10 0"
+                            Command="{Binding PreviuosCommand}">
+                        <StackPanel>
+                            <fa:ImageAwesome Icon="Backward" Width="30" Height="30"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Height="50" Width="50" Padding="0"
+                            Margin="10 0"
+                            Command="{Binding PlayPauseCommand}">
+                        <StackPanel>
+                            <fa:ImageAwesome Icon="{Binding PlayPauseIcon}" Width="50" Height="50"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Height="30" Width="30" Padding="0"
+                            Margin="10 0"
+                            Command="{Binding NextCommand}">
+                        <StackPanel>
+                            <fa:ImageAwesome Icon="Forward" Width="30" Height="30"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

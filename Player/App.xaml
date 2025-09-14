@@ -8,7 +8,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/Controls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="FontAwesome">pack://application:,,,/Player;component/Assets/Fonts/Font Awesome 7 Brands-Regular-400</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
